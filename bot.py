@@ -17,7 +17,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 CONFIG_DIR = os.path.join(os.environ['HOME'], '.sbu-bot/')
 CONFIG_FILE = os.path.join(CONFIG_DIR, "config.yml")
 RODAR_SEMPRE = False
-RENOVA_SEMPRE = False
+RENOVAR_SEMPRE = False
 TAM_SENHA = 8  # tamanho máximo da senha
 
 logging.basicConfig(
@@ -99,8 +99,7 @@ def renova(firefox):
         livros = tabela.find_elements_by_css_selector('tr')[1:]
 
         # renovar = True só se há alguma entrega para hoje
-        # ou RENOVA_SEMPRE == True
-        renovar = RENOVA_SEMPRE
+        renovar = False
         hoje = date.today()
         for livro in livros:
             data_devolucao_str = livro.find_elements_by_css_selector(
@@ -108,11 +107,11 @@ def renova(firefox):
             data_devolucao = datetime.strptime(
                 data_devolucao_str.strip(), '%d/%m/%y').date()
 
-            if data_devolucao == hoje:
+            if data_devolucao == hoje or RENOVAR_SEMPRE:
                 renovar = True
                 livro.find_element_by_tag_name('input').click()
 
-        if renovar:
+        if renovar or RENOVAR_SEMPRE:
             firefox.find_element_by_link_text(
                 'Renovar itens selecionados').click()
             firefox.implicitly_wait(30)
@@ -142,6 +141,8 @@ if lastrun == date.today() and not RODAR_SEMPRE:
 else:
     config_dict['lastrun'] = date.today()
     write_config(config_dict)
+RODAR_SEMPRE = config_dict.get("rodar_sempre")
+RENOVAR_SEMPRE = config_dict.get("renovar_sempre")
 
 os.system("./download_gecko.sh")
 try:
