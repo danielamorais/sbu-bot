@@ -4,6 +4,8 @@ import os
 import logging
 import yaml
 
+from datetime import date
+
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
@@ -22,19 +24,32 @@ logging.basicConfig(
 
 def load_config():
     """
-    loads config dictionary containing keys "email" and "senha"
+    loads config dictionary containing keys "email", "senha" and "lastrun"
     from config.yml file
     """
     try:
         with open(CONFIG_FILE, "r") as config_file:
-            config = yaml.load(config_file)
-        config_dict = config['sbu-bot']
+            config_dict = yaml.load(config_file)
     except Exception, err:
         error_message = "Erro na leitura de configuração."
         print error_message
         logging.exception(error_message)
         raise
     return config_dict
+
+
+def write_config(config):
+    """
+    writes config to config.yml
+    """
+    try:
+        with open(CONFIG_FILE, "w") as config_file:
+            yaml.dump(config, default_flow_style=False, stream=config_file)
+    except Exception, err:
+        error_message = "Erro as escrever configuração."
+        print error_message
+        logging.exception(error_message)
+        raise
 
 
 os.system("./download_gecko.sh")
@@ -76,6 +91,12 @@ except Exception, err:
     print error_message
     logging.exception(error_message)
     raise
+lastrun = config_dict.get('lastrun')
+if lastrun == date.today():
+    exit()
+else:
+    config_dict['lastrun'] = date.today()
+    write_config(config_dict)
 
 login(email, senha)
 firefox.get('http://acervus.unicamp.br/')
