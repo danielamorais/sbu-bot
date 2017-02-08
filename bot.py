@@ -1,13 +1,23 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
+import os
 
 from selenium import webdriver
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
-firefox = webdriver.Firefox()
+
+os.system("./download_gecko2.sh")
+try:
+    firefox = webdriver.Firefox(executable_path='./geckodriver')
+except WebDriverException, err:
+    print "Geckodriver não encontrado."
+    raise
+
+
 def login():
     firefox.get('http://acervus.unicamp.br/asp/login.asp?modo_busca=rapida&content=mensagens&iBanner=0&iEscondeMenu=0&iSomenteLegislacao=0&iIdioma=0')
     firefox.implicitly_wait(10)
