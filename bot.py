@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import os
+import logging
 import yaml
 
 from selenium import webdriver
@@ -14,6 +15,10 @@ from selenium.webdriver.support.ui import WebDriverWait
 CONFIG_DIR = os.path.join(os.environ['HOME'], '.sbu-bot/')
 CONFIG_FILE = os.path.join(CONFIG_DIR, "config.yml")
 
+logging.basicConfig(
+    filename=os.path.join(CONFIG_DIR, 'log.log'), level=logging.INFO,
+    format='%(asctime)s\t\t%(message)s', datefmt='%d/%m/%Y %I:%M:%S %p')
+
 
 def load_config():
     """
@@ -25,7 +30,9 @@ def load_config():
             config = yaml.load(config_file)
         config_dict = config['sbu-bot']
     except Exception, err:
-        print "Erro na leitura de configuração:"
+        error_message = "Erro na leitura de configuração."
+        print error_message
+        logging.exception(error_message)
         raise
     return config_dict
 
@@ -34,7 +41,9 @@ os.system("./download_gecko.sh")
 try:
     firefox = webdriver.Firefox(executable_path='./geckodriver')
 except WebDriverException, err:
-    print "Geckodriver não encontrado."
+    error_message = "Geckodriver não encontrado."
+    print error_message
+    logging.exception(error_message)
     raise
 
 
@@ -51,14 +60,22 @@ def login(email, senha):
         send_button.click()
         WebDriverWait(firefox, 30).until(EC.visibility_of_element_located((By.CLASS_NAME, 'justificado')))
     except Exception, err:
-        print "deu ruim"
-        print Exception, err
+        error_message = "deu ruim"
+        print error_message
+        logging.exception(error_message)
+        raise
     return
 
 
 config_dict = load_config()
-email = config_dict['email']
-senha = config_dict['senha']
+try:
+    email = config_dict['email']
+    senha = config_dict['senha']
+except Exception, err:
+    error_message = "Arquivo de configuração mal-formatado."
+    print error_message
+    logging.exception(error_message)
+    raise
 
 login(email, senha)
 firefox.get('http://acervus.unicamp.br/')
@@ -77,6 +94,8 @@ try:
     #firefox.find_element_by_link_text('Renovar itens selecionados').click()
     print "renovou"
 except Exception, err:
-    print "bosta"
-    print Exception, err
+    error_message = "bosta"
+    print error_message
+    logging.exception(error_message)
+    raise
 #firefox.close()
