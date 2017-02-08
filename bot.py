@@ -4,7 +4,7 @@ import os
 import logging
 import yaml
 
-from datetime import date
+from datetime import date, datetime
 
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
@@ -17,6 +17,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 CONFIG_DIR = os.path.join(os.environ['HOME'], '.sbu-bot/')
 CONFIG_FILE = os.path.join(CONFIG_DIR, "config.yml")
 RODAR_SEMPRE = False
+RENOVA_SEMPRE = False
+TAM_SENHA = 8  # tamanho máximo da senha
 
 logging.basicConfig(
     filename=os.path.join(CONFIG_DIR, 'log.log'), level=logging.INFO,
@@ -97,13 +99,14 @@ def renova(firefox):
         livros = tabela.find_elements_by_css_selector('tr')[1:]
 
         # renovar = True só se há alguma entrega para hoje
-        renovar = False
+        # ou RENOVA_SEMPRE == True
+        renovar = RENOVA_SEMPRE
         hoje = date.today()
         for livro in livros:
             data_devolucao_str = livro.find_elements_by_css_selector(
                 'td')[-1].text
             data_devolucao = datetime.strptime(
-                data_devolucao_str, '%d/%m/%y').date()
+                data_devolucao_str.strip(), '%d/%m/%y').date()
 
             if data_devolucao == hoje:
                 renovar = True
@@ -127,7 +130,7 @@ def renova(firefox):
 config_dict = load_config()
 try:
     email = config_dict['email']
-    senha = config_dict['senha']
+    senha = str(config_dict['senha'])[:TAM_SENHA]
 except Exception, err:
     error_message = "Arquivo de configuração mal-formatado."
     print error_message
