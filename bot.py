@@ -6,6 +6,7 @@ import yaml
 
 from datetime import date, datetime
 
+from pyvirtualdisplay import Display
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
@@ -18,6 +19,7 @@ CONFIG_DIR = os.path.join(os.environ['HOME'], '.sbu-bot/')
 CONFIG_FILE = os.path.join(CONFIG_DIR, "config.yml")
 RODAR_SEMPRE = False
 RENOVAR_SEMPRE = False
+SEM_CABECA = True
 TAM_SENHA = 8  # tamanho máximo da senha
 
 logging.basicConfig(
@@ -77,14 +79,14 @@ def login(email, senha, firefox):
 
 def renova(firefox):
     firefox.get('http://acervus.unicamp.br/')
-    firefox.implicitly_wait(10)
+    firefox.implicitly_wait(30)
     WebDriverWait(firefox, 60).until(EC.visibility_of_element_located((By.ID, 'mainFrame')))
     firefox.switch_to_frame(firefox.find_element_by_id('mainFrame'))
     try:
         # seleciona e clica no menu "Serviços"
+        # print firefox.page_source
         firefox.find_element_by_xpath(
             '//a[contains(text(), "Serviços")]').click()
-        firefox.implicitly_wait(30)
         # selecion e clica "Circ./Renovação"
         firefox.find_element_by_xpath(
             '//a[contains(text(), "Circ./Renovação")]').click()
@@ -138,14 +140,14 @@ except Exception, err:
 lastrun = config_dict.get('lastrun')
 if lastrun == date.today() and not RODAR_SEMPRE:
     exit()
-else:
-    config_dict['lastrun'] = date.today()
-    write_config(config_dict)
 RODAR_SEMPRE = config_dict.get("rodar_sempre")
 RENOVAR_SEMPRE = config_dict.get("renovar_sempre")
 
 os.system("./download_gecko.sh")
 try:
+    if SEM_CABECA:
+        display = Display(visible=0, size=(800, 600))
+        display.start()
     firefox = webdriver.Firefox(executable_path='./geckodriver')
 except WebDriverException, err:
     error_message = "Geckodriver não encontrado."
@@ -154,4 +156,6 @@ except WebDriverException, err:
     raise
 login(email, senha, firefox)
 renova(firefox)
-#firefox.close()
+firefox.close()
+config_dict['lastrun'] = date.today()
+write_config(config_dict)
