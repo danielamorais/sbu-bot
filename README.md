@@ -6,13 +6,13 @@ A instalação é simples.
 
 * Primeiramente clone este repositório num diretório de sua preferência
     ```bash
-    git clone https://github.com/prcaetano/sbu-bot.git
+    $ git clone https://github.com/prcaetano/sbu-bot.git
     ```
 
 * Certifique-se que possui virtualenv instalado em seu sistema. Em sistemas debian-like você pode instalá-lo com os comandos
     ```bash
-    sudo apt update
-    sudo apt install virtualenv
+    $ sudo apt update
+    $ sudo apt install virtualenv
     ```
 
 * Execute o script `install.sh`
@@ -22,7 +22,7 @@ A instalação é simples.
 
 O script pedirá seu email e senha do acervus. Ele instalará o robô no diretório `/usr/local/bin/sbu-bot`.
 Um arquivo de configuração contendo as linhas
-    ```yaml
+    ```yml
     email: leitor_avido_e_esquecido@dac.unicamp.br
     senha: 5up3r53gr3d0
     ```
@@ -32,13 +32,13 @@ será salvo em `$HOME/.sbu-bot/config.yml`. A linha `0 */3 * * * /usr/local/bin/
 
 * Remova as pastas contendo o script e as configurações
     ```bash
-    sudo rm -rf /usr/local/bin/sbu-bot
-    rm -rf ~/.sbu-bot
+    $ sudo rm -rf /usr/local/bin/sbu-bot
+    $ rm -rf ~/.sbu-bot
     ```
 
 * Delete o cron job, executando
     ```bash
-    crontab -e
+    $ crontab -e
     ```
 e removendo a linha `0 */3 * * * /usr/local/bin/sbu-bot/venv/bin/python /usr/local/bin/sbu-bot/bot.py > /dev/null`.
 
