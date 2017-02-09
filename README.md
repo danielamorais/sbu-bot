@@ -22,7 +22,7 @@ A instalação é simples.
 
 O script pedirá seu email e senha do acervus. Ele instalará o robô no diretório `/usr/local/bin/sbu-bot`.
 Um arquivo de configuração contendo as linhas
-    ```yml
+    ```
     email: leitor_avido_e_esquecido@dac.unicamp.br
     senha: 5up3r53gr3d0
     ```
