@@ -23,13 +23,15 @@ echo "Copiando arquivos para $BOT_PATH"
 sudo mkdir $BOT_PATH
 sudo cp -r * $BOT_PATH
 sudo chmod +x "$BOT_PATH/download_gecko.sh"
+sudo chmod 755 "$BOT_PATH/bot.py"
 
 echo "Configurando virtualenv..."
 sudo virtualenv -p $PYTHON "$BOT_PATH/venv"
 sudo -E "$VENV_PATH/python" -m pip install -U pip
 sudo -E "$VENV_PATH/pip" install -r requirements.txt
 echo "Baixando e instalando geckodriver..."
-sudo -s source "$BOT_PATH/download_gecko.sh"
+sudo bash "$BOT_PATH/download_gecko.sh"
+sudo chmod 755 "$BOT_PATH/geckodriver"
 
 echo "Instalando cronjob..."
 COMANDO="$VENV_PATH/python $BOT_PATH/bot.py > /dev/null"
