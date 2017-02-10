@@ -1,19 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import os
 import logging
-import yaml
-
+import os
 from datetime import date, datetime
 
+import yaml
 from pyvirtualdisplay import Display
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-
 
 CONFIG_DIR = os.path.join(os.environ['HOME'], '.sbu-bot/')
 CONFIG_FILE = os.path.join(CONFIG_DIR, "config.yml")
