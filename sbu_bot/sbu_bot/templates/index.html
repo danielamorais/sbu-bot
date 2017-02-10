@@ -3,11 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>SBU Bot: Renovação automática de emprestimo de livros</title>
-    <link rel="stylesheet" href="../static/css/foundation.css" type="text/css" >
-    <link rel="stylesheet" href="../static/css/foundation-icons.css" type="text/css" >
-    <link rel="stylesheet" href="../static/css/app.css" type="text/css" >
+    <link rel="stylesheet" href="../static/css/foundation.css" type="text/css">
+    <link rel="stylesheet" href="../static/css/foundation-icons.css" type="text/css">
+    <link rel="stylesheet" href="../static/css/app.css" type="text/css">
+    <script src="../static/js/app.js"></script>
+    <script src="../static/js/vendor/jquery.js"></script>
+    <script src="../static/js/vendor/foundation.js"></script>
 </head>
 <body>
+<script>
+    window.onload = function() {
+        esconderDiv();
+    };
+</script>
 <div class="row wrap">
     <div class="large-4 medium-4 small-12 medium-centered large-centered small-centered columns">
             <pre>
@@ -24,15 +32,22 @@
     <!-- <a href="#" class="button">Simple Button</a> -->
     <div class="large-4 medium-4 small-12 medium-centered large-centered small-centered columns">
         <label>Email:</label>
-        <input type="text" placeholder="Email da conta da biblioteca"/>
+        <input type="text" id="email" placeholder="Email da conta da biblioteca" required/>
     </div>
     <div class="large-4 medium-4 small-12 medium-centered large-centered small-centered columns">
         <label>Senha:</label>
-        <input type="text" placeholder="Senha"/>
+        <input type="text" id="senha" placeholder="Senha"/>
     </div>
     <div class="large-4 medium-4 small-12 medium-centered large-centered small-centered columns"
          style="margin-bottom: 0">
-        <a href="#" class="button">Enviar</a>
+        <a href="#" class="button" onclick="validarEmail()">Enviar</a>
+    </div>
+    <div class="alert callout small" data-closable id="erroEmail">
+        <h3>Erro :(</h3>
+        <p>Digite corretamente o seu e-mail.</p>
+        <button class="close-button" aria-label="Dismiss alert" type="button" data-close>
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
 </div>
 <!-- Footer -->
@@ -41,11 +56,12 @@
         <div class="small-12 medium-6 large-3 columns" align="left">
             <p>Este programa é software livre; você pode distribui-lo e/ou modificá-lo sob os termos da GNU
                 General
-                Public License conforme publicada pela Free Software Foundation. <br><a target="_blank" href="https://www.github.com/danielamorais/sbu-bot"><i
-                    class="step fi-social-github size-12" style="font-size: 30px;"></i></a></p>
+                Public License conforme publicada pela Free Software Foundation. <br><a target="_blank"
+                                                                                        href="https://www.github.com/danielamorais/sbu-bot"><i
+                        class="step fi-social-github size-12" style="font-size: 30px;"></i></a></p>
         </div>
         <div class="small-12 medium-6 large-4 columns info" style="margin-top: 3%">
-            <b><a href="/faq">dúvidas</a>  /  <a href="https://github.com/danielamorais/sbu-bot/issues">contato</a></b>
+            <b><a href="/faq">dúvidas</a> / <a target="_blank" href="https://github.com/danielamorais/sbu-bot/issues">contato</a></b>
         </div>
     </div>
 </footer>

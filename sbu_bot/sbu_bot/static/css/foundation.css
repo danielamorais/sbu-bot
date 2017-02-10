@@ -2233,6 +2233,8 @@ select {
     background-color: #f7e4e1;
     color: #0a0a0a; }
   .callout.small {
+    margin-left: 30%;
+    margin-right: 30%;
     padding-top: 0.5rem;
     padding-right: 0.5rem;
     padding-bottom: 0.5rem;
