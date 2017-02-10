@@ -17,6 +17,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 CONFIG_DIR = os.path.join(os.environ['HOME'], '.sbu-bot/')
 CONFIG_FILE = os.path.join(CONFIG_DIR, "config.yml")
+INSTALL_PATH = '/usr/local/bin/sbu-bot'
+GECKO_PATH = os.path.join(INSTALL_PATH, 'geckodriver')
 RODAR_SEMPRE = False
 RENOVAR_SEMPRE = False
 SEM_CABECA = True
@@ -140,15 +142,19 @@ except Exception, err:
 lastrun = config_dict.get('lastrun')
 if lastrun == date.today() and not RODAR_SEMPRE:
     exit()
-RODAR_SEMPRE = config_dict.get("rodar_sempre")
-RENOVAR_SEMPRE = config_dict.get("renovar_sempre")
 
-os.system("./download_gecko.sh")
+rodar_sempre = config_dict.get("rodar_sempre")
+renovar_sempre = config_dict.get("renovar_sempre")
+if rodar_sempre is not None:
+    RODAR_SEMPRE = rodar_sempre
+if renovar_sempre is not None:
+    RENOVAR_SEMPRE = renovar_sempre
+
 try:
     if SEM_CABECA:
         display = Display(visible=0, size=(800, 600))
         display.start()
-    firefox = webdriver.Firefox(executable_path='./geckodriver')
+    firefox = webdriver.Firefox(executable_path=GECKO_PATH)
 except WebDriverException, err:
     error_message = "Geckodriver não encontrado."
     print error_message
