@@ -1,0 +1,80 @@
+.full-width {
+    max-width: 1400px;
+}
+
+.footer {
+    background-color: #141414;
+    text-align: center;
+    color: #fff;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 0.3rem;
+    padding-top: 10px;
+    display: block;
+    margin-top: 20px; /* space between content and footer */
+    box-sizing: border-box;
+    position: relative;
+    width: 100%;
+    font-size: 1em;
+}
+
+.footer i {
+    font-size: 100px;
+}
+
+.footer h4 {
+    color: #fff;
+    font-weight: 300;
+    font-size: 0.9em;
+    margin-top: 5%;
+}
+
+.footer p, .footer i {
+    font-weight: 300;
+    font-size: 0.8em;
+    color: #fff;
+    margin-top: 2%;
+}
+
+.info a {
+    color: #fff;
+}
+
+.info a:hover {
+    background-color: white;
+    color: #000;
+}
+
+.fi-social-github:hover {
+    color: #000;
+}
+
+@media only screen and (max-width: 40em) {
+    .footer .columns:nth-child(n+2) {
+        margin-top: 5%;
+        min-height: 1px;
+    }
+}
+
+.footer-links li {
+    margin-top: .5em;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    margin: 0px;
+    padding: 0px;
+}
+
+.wrap {
+    height: auto;
+    margin: 0 auto -80px; /* footer height + space */
+    min-height: 100%;
+    padding: 0 0 80px; /* footer height + space */
+    box-sizing: border-box;
+    overflow: auto;
+}
